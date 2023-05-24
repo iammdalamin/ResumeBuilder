@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "cogo-toast": "^4.2.3",
+    "framer-motion": "^10.11.2",
+    "react-icons": "^4.8.0"
+  }
+}

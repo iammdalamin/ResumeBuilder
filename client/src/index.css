@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #eeeeee;
+}
+
+.inputGroup {
+  @apply flex flex-col gap-2;
+}
+.resumeInput {
+  @apply w-full bg-transparent focus:outline-none border-b border-gray-300 text-white rounded-none py-3 focus:border-blue-400 transition-colors duration-500 cursor-text;
+}
+.formLabel {
+  @apply text-lg font-medium text-gray-600;
+}
+
+.submitBtn {
+  @apply px-8 py-4 bg-gray-700 text-white text-lg font-bold;
+}
+
+.float-label-input {
+  margin: 32px 0;
+}
+
+.float-label-input:focus-within label,
+.float-label-input input:not(:placeholder-shown) + label {
+  transform: translateX(-0.7rem) translateY(-1.5rem) scale(0.75);
+  margin-left: 0;
+}
