@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getEmail } from "../helpers/SessionHelper";
 
 export const resumeSlice = createSlice({
   name: "resume",
@@ -11,20 +12,24 @@ export const resumeSlice = createSlice({
       phone: "",
       address: "",
       summary: "",
+      photo: "",
           graduation: [{
               instituteName: "",
               examName: "",
-              passingYear: "",
+              start: "",
+              end: "",
               department:""
       }],
           experience: [{
-              company: "",
+            company: "",
+            position:"",
               start: "",
               end: "",
               present: false,
               summary:""
       }],
-          skills:[],
+      skills: [],
+          languages:[],
       nextPermation: false,
       nextClick: false,
       emailValid:false,

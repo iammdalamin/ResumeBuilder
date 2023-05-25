@@ -42,22 +42,7 @@ console.log(req.body );
             error:"Email is taken"
         })
     }
-  //  const hashPassword = (password) => {
-  //     console.log(password);
-  //     return new Promise((resolve, reject) => {
-  //         bcrypt.genSalt(12, (err, salt) => {
-  //             if (err) {
-  //                 reject(err)
-  //             }
-  //             bcrypt.hash(password, salt, (err, hash) => {
-  //                 if (err) {
-  //                     reject(err)
-  //                 }
-  //                 resolve(hash)
-  //             })
-  //         })
-  //     })
-  //  }
+
    const hashedPassword = await hashPassword(password)
     if (photo) {
     const result = await cloudinary.uploader.upload(photo, {
@@ -79,7 +64,8 @@ console.log(req.body );
       res.json({
           user: {
               name: `${user.firstName +" "+ user.lastName}`,
-              email: user.email,
+          email: user.email,
+              photo:user.photo
           },
           token
 
@@ -109,6 +95,7 @@ exports.profileUpdate = (req, res) => {
 // Login
 exports.login = (req, res) => {
   const { email, password } = req.body;
+  console.log(email,password);
   if (!email) {
     return res.json({
       status: 400,
@@ -124,10 +111,11 @@ exports.login = (req, res) => {
   };
 
 
-  UserModel.findOne({ email }, (err, data) => {
+  UserModel.findOne({ email },async (err, data) => {
     try {
         if (!err) {
-            const match = comparePassword(password, data.password)
+          const match =await comparePassword(password, data.password)
+          console.log(match);
             if (!match) {
                 res.json({
                     status:400,
@@ -136,7 +124,8 @@ exports.login = (req, res) => {
                 })
             } else {
                 let Payload = { exp: Math.floor(Date.now() / 1000) * (24 * 60 * 60), data: data["email"] }
-                let token = jwt.sign(Payload, process.env.JWT_SECRET)
+              let token = jwt.sign(Payload, process.env.JWT_SECRET)
+              req.headers.email = email
                 res.json({
                     status:200,
 

@@ -1,8 +1,22 @@
 import React from "react";
 import { AiFillStar } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { useCreateResumeMutation, useFindResumeQuery } from "../feature/api";
+import { redirect } from "react-router-dom";
 
 const FeatureItem = ({ imgURL, title, desc, type, premium }) => {
-  const exploreHandle = () => {};
+  const navigate = useNavigate();
+  const [createResume, { data, isLoading }] = useCreateResumeMutation();
+
+  const exploreHandle = async (type) => {
+    await createResume(type);
+  };
+  if (data?.data.length > 0) {
+  } else {
+    navigate(`/dashboard/resume/create/${type}`);
+  }
+  console.log(data);
+
   return (
     <div className="mb-14 relative ">
       {premium ? (
@@ -24,8 +38,8 @@ const FeatureItem = ({ imgURL, title, desc, type, premium }) => {
 
         <div className="relative group ">
           <button
-            className="absolute top-52 left-14 px-6 py-2 bg-indigo-700 text-white hidden duration-500 ease-linear group-hover:block "
-            onClick={() => exploreHandle()}
+            className="absolute top-52 left-14 px-6 py-2 bg-indigo-700 text-white  duration-500 ease-linear hidden group-hover:block "
+            onClick={() => exploreHandle(type)}
           >
             {" "}
             Explore Resume

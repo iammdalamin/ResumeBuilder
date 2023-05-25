@@ -23,7 +23,7 @@ const Modal = ({ isVisible, onClose, children }) => {
             duration: 0.2,
           }}
           id="modal"
-          className="fixed inset-0  bg-white  bg-opacity-25  backdrop-blur-lg	 flex justify-center items-center "
+          className="fixed inset-0  bg-white  bg-opacity-25  backdrop-blur-lg	 flex justify-center items-center z-10 "
           onClick={(e) => handleClose(e)}
         >
           <div className="w-[600px] flex flex-col">

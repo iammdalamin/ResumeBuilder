@@ -23,6 +23,7 @@ const ExperienceInput = () => {
         experience: [
           {
             company: experience?.company,
+            position: experience?.position,
             summary: experience?.summary,
             start: experience?.start,
             end: experience?.end,
@@ -48,6 +49,22 @@ const ExperienceInput = () => {
             className="absolute top-3 left-0 text-white pointer-events-none transition duration-400 ease-in-out bg-transparent  "
           >
             Company Name
+          </label>
+        </div>
+        <div class="relative float-label-input ">
+          <input
+            type="text"
+            name="position"
+            placeholder=" "
+            autoComplete="off"
+            className=" resumeInput"
+            onChange={(e) => handleChange(e)}
+          />
+          <label
+            for="name"
+            className="absolute top-3 left-0 text-white pointer-events-none transition duration-400 ease-in-out bg-transparent  "
+          >
+            Position
           </label>
         </div>
 

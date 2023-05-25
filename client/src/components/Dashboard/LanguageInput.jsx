@@ -4,84 +4,86 @@ import { AiFillPlusCircle, AiOutlineClose } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { info } from "../../redux/resume";
 
-const SkillsInput = () => {
+const LanguageInput = () => {
   const resume = useSelector((state) => state.resume.value);
   const dispatch = useDispatch();
-  const [skill, setSkill] = useState("");
-  const [skills, setSkills] = useState([]);
+  const [language, setLanguage] = useState("");
+  const [languages, setLanguages] = useState([]);
 
-  const handleAddSkills = async (e) => {
+  const handleAddLanguages = async (e) => {
     e.preventDefault();
-    if (!skill.trim()) {
-      cogoToast.warn("Please insert valid skill name");
+    if (!language.trim()) {
+      cogoToast.warn("Please insert a language ");
     } else {
-      setSkills([...skills, skill]);
-      setSkill("");
+      setLanguages([...languages, language]);
+      setLanguage("");
     }
   };
-  const handleDeleteSkill = (e) => {
-    const newList = skills.filter((skill) => skill != e);
-    setSkills(newList);
+  const handleDelete = (e) => {
+    const newList = languages.filter((skill) => skill != e);
+    setLanguages(newList);
   };
-  console.log("skills", resume);
+  console.log("languages", resume);
 
   useEffect(() => {
     dispatch(
       info({
         ...resume,
-        skills: skills,
+        languages: languages,
       })
     );
-  }, [skills]);
+  }, [languages]);
   return (
     <>
       <div className="w-1/2 bg-gray-900 h-auto text-white rounded-xl py-12 px-4 md:px-10 flex flex-col ">
         <div class="relative float-label-input ">
           <input
             type="text"
-            name="examName"
+            name="language"
             placeholder=" "
             autoComplete="off"
             className=" resumeInput"
-            onChange={(e) => setSkill(e.target.value.toUpperCase())}
+            value={language}
+            onChange={(e) => setLanguage(e.target.value.toUpperCase())}
           />
           <label
             for="name"
             className="absolute top-3 left-0 text-white pointer-events-none transition duration-400 ease-in-out bg-transparent  "
           >
-            Skills
+            Language
           </label>
 
           <span
             className="absolute mt-2 cursor-pointer top-0 right-0 block"
-            onClick={(e) => handleAddSkills(e)}
+            onClick={(e) => handleAddLanguages(e)}
           >
             {" "}
             <AiFillPlusCircle size={25} />
           </span>
         </div>
+
         <div className="flex flex-wrap gap-2 text-sm ">
-          {skills?.map((skill, i) => {
+          {languages?.map((language, i) => {
             return (
               <div
                 key={i}
                 className="bg-blue-100 text-blue-800  font-medium  px-3.5 py-1.5 rounded flex justify-center items-center transition-all"
               >
-                {skill}
+                {language}
                 <i
                   className="p-1 cursor-pointer"
-                  onClick={() => handleDeleteSkill(skill)}
+                  onClick={() => handleDelete(language)}
                 >
                   <AiOutlineClose size={17} />
                 </i>
               </div>
             );
           })}
-          {!skills && <h1>Add some skill</h1>}
+          {!languages && <h1>Add some language</h1>}
         </div>
       </div>
     </>
   );
 };
 
-export default SkillsInput;
+export default LanguageInput;

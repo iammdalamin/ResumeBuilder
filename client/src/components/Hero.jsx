@@ -18,7 +18,7 @@ const Hero = () => {
           The online resume builder getting folks hired by BBC, Google, Apple,
           Tesla, and Airbnb.
         </p>
-        <Link to="/dashboard">
+        <Link to="/resume-templates">
           <Button>Build Resume</Button>
         </Link>
         <p className="text-gray-600 mt-2">Try it for free.</p>

@@ -1,5 +1,6 @@
 import html2pdf from "html2pdf.js";
 import React, { useEffect, useRef } from "react";
+import { useUpdateResumeMutation } from "../feature/api";
 import Template0 from "../templates/Template0";
 import Template1 from "../templates/Template1";
 
@@ -9,7 +10,9 @@ function convertHtmlToPdf() {
   html2pdf().from(element).save("output.pdf");
 }
 
-function PDFFile() {
+function PDFFile({ resume, type }) {
+  const [registration, result] = useUpdateResumeMutation();
+
   const htmlContentRef = useRef(null);
 
   useEffect(() => {
@@ -33,13 +36,33 @@ function PDFFile() {
         console.error("Error loading images:", error);
       });
   }, []);
-
+  const submitHandle = async (resume) => {
+    console.log(resume);
+    await registration(resume);
+  };
+  console.log(result);
   return (
     <div>
-      <button onClick={convertHtmlToPdf}>Convert to PDF</button>
+      <button
+        className="px-4 py-2 bg-gray-700"
+        onClick={() => submitHandle(resume)}
+      >
+        Save
+      </button>
+      <button
+        className="px-4 py-2 bg-gray-700"
+        onClick={() => convertHtmlToPdf()}
+      >
+        Download
+      </button>
       <div id="htmlContent" className="" ref={htmlContentRef}>
-        <Template0 />
-        {/* Add your HTML content with proper styling and structure */}
+        {type === "Creative" ? (
+          <Template0 resume={resume} />
+        ) : type === "Basic" ? (
+          <Template1 resume={resume} />
+        ) : (
+          "NotFound"
+        )}
       </div>
     </div>
   );

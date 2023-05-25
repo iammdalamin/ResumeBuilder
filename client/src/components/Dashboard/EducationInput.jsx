@@ -24,7 +24,8 @@ const EducationInput = () => {
           {
             instituteName: education?.instituteName,
             examName: education?.examName,
-            passingYear: education?.passingYear,
+            start: education?.start,
+            end: education?.end,
             department: education?.department,
           },
         ],
@@ -86,23 +87,23 @@ const EducationInput = () => {
         <div class="flex items-center">
           <div class="relative">
             <input
-              name="passingYear"
+              name="start"
               type="date"
               class="resumeInput "
               placeholder="Select date start"
               onChange={(e) => handleChange(e)}
             />
           </div>
-          {/* <span class="mx-4 text-gray-500">to</span> */}
-          {/* <div class="relative">
+          <span class="mx-4 text-gray-500">to</span>
+          <div class="relative">
             <input
-              name="graduationEnd"
+              name="end"
               type="date"
               class="resumeInput "
               placeholder="Select date end"
               onChange={(e) => handleChange(e)}
             />
-          </div> */}
+          </div>
         </div>
       </div>
     </>

@@ -120,7 +120,6 @@ const ResumePage = () => {
           <div className="w-full mt-20 flex flex-wrap justify-center gap-10 ">
             {resumesData.map((item, i) => {
               const { imgURL, type, desc, premium } = item;
-              console.log(imgURL);
               return (
                 <FeatureItem
                   key={i}

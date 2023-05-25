@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getToken } from '../helpers/SessionHelper';
 
 export const resumeApi = createApi({
   
   reducerPath: "resumeApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/v1" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://resumebuilder-0509.onrender.com/api/v1" }),
 //   baseQuery: fetchBaseQuery({ baseUrl: "https://shop-server-ymqb.onrender.com/api/v1" }),
   endpoints: (builder) => ({
     getAllResumes: builder.query({
@@ -25,10 +26,19 @@ export const resumeApi = createApi({
           }),
     }),
     createResume: builder.mutation({
+      query: (type) => ({
+        url: `/resume/create/${type}`,
+        method: 'GET',
+        headers:{"token":getToken()}
+      }),
+    }),
+    updateResume: builder.mutation({
       query: (body) => ({
-        url: '/resume/create/creative',
-        method: 'POST',
-        body,
+        url: `resume/builder`,
+        method: 'PUT',
+        headers: { "token": getToken() },
+        body
+        
       }),
     }),
     registration: builder.mutation({
@@ -38,7 +48,14 @@ export const resumeApi = createApi({
         body,
       }),
     }),
+    login: builder.mutation({
+      query: (body) => ({
+        url: '/login',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
   })
 
-export const {useGetAllResumesQuery, useCreateResumeMutation, useRegistrationMutation} = resumeApi;
+export const {useGetAllResumesQuery, useCreateResumeMutation, useRegistrationMutation, useLoginMutation, useFindResumeQuery, useUpdateResumeMutation} = resumeApi;

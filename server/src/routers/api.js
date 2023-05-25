@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const userController=require("../controllers/usersController");
-const taskController=require("../controllers/tasksController")
+
 const AuthVerifyMiddleware = require("../middleware/AuthVerifyMiddleware");
-const { createResume, getResume, updateResume } = require("../controllers/resumeController");
+const { createResume, getResume, updateResume, resumeBuilder } = require("../controllers/resumeController");
 
 // User Actions Routes 
 router.post("/registration",userController.registration);
@@ -15,22 +15,14 @@ router.get("/recoverVerifyOTP/:email/:otp",userController.recoverVerifyOTP)
 
 router.post("/recoveryResetPassword",userController.RecoveryResetPassword)
 
-// TaskAction Routes 
-router.post("/createTask",AuthVerifyMiddleware,taskController.createTask)
-router.get("/deleteTask/:id",AuthVerifyMiddleware,taskController.deleteTasks)
-
-
-router.get("/updateTaskStatus/:id/:status",AuthVerifyMiddleware,taskController.updateTaskStatus)
-
-
-router.get("/listTaskByStatus/:status",AuthVerifyMiddleware,taskController.listTaskByStatus)
-router.get("/taskStatusCount",AuthVerifyMiddleware,taskController.taskStatusCount)
 
 
 
-router.get("/resume/create/:type", createResume)
-router.get("/resume/:type", getResume)
-router.get("/resume/update/:type", updateResume)
+router.put("/resume/builder", AuthVerifyMiddleware,resumeBuilder)
+
+router.get("/resume/create/:type", AuthVerifyMiddleware, createResume)
+router.get("/resume/:type", AuthVerifyMiddleware,getResume)
+router.put("/resume/update/:type",AuthVerifyMiddleware, updateResume)
 
 
 

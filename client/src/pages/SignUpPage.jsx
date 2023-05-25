@@ -2,9 +2,13 @@ import cogoToast from "cogo-toast";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import { useRegistrationMutation } from "../feature/api";
+import { setToken, setUserDetails } from "../helpers/SessionHelper";
 
 const SignUpPage = ({ onClose }) => {
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,9 +18,7 @@ const SignUpPage = ({ onClose }) => {
   const [data, setData] = useState(null);
   const [registration, result] = useRegistrationMutation();
 
-  const handleOnSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleOnSubmit = async () => {
     if (password === confirmPassword) {
       const userData = {
         firstName: firstName,
@@ -26,14 +28,32 @@ const SignUpPage = ({ onClose }) => {
         photo: img,
       };
       console.log(userData);
-
-      await registration(userData);
-
-      // con
-    } else {
-      console.log("Password didn't match!");
+      try {
+        await registration(userData);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
+  if (result.status === "fulfilled") {
+    if (result.data.status != 400) {
+      setToken(result.data.token);
+      setUserDetails(result.data);
+      cogoToast.success("Registration Successfull");
+      console.log(result.data);
+      onClose();
+    } else {
+      cogoToast.error(result?.data.error);
+      console.log(result?.data.error);
+    }
+  }
+  if (result.status === "pending") {
+    cogoToast.loading("Wait a minute..");
+  }
+  if (result.status === "rejected") {
+    cogoToast.error("Something went wrong");
+  }
 
   const onChangeHandle = (e) => {
     const file = e.target.files[0];
@@ -76,12 +96,14 @@ const SignUpPage = ({ onClose }) => {
           placeholder="First Name"
           className="p-2 rounded-md focus:outline-none"
           onChange={(e) => setFirstName(e.target.value)}
+          required
         />
         <input
           type="text"
           placeholder="Last Name"
           className="p-2 rounded-md focus:outline-none"
           onChange={(e) => setLastName(e.target.value)}
+          required
         />
 
         <input
@@ -89,24 +111,28 @@ const SignUpPage = ({ onClose }) => {
           placeholder="Email"
           className="p-2 rounded-md focus:outline-none"
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Password"
           className="p-2 rounded-md focus:outline-none"
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <input
           type="password"
           placeholder="Confirm Password"
           className="p-2 rounded-md focus:outline-none"
           onChange={(e) => setConfirmPassword(e.target.value)}
+          required
         />
         <input
           type="file"
           placeholder="Image"
           className="p-2 rounded-md"
           onChange={(e) => onChangeHandle(e)}
+          required
         />
         <button
           onClick={(e) => handleOnSubmit(e)}

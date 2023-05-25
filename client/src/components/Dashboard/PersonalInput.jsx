@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useCreateResumeMutation } from "../../feature/api";
 import { info } from "../../redux/resume";
 
-const PersonalInput = () => {
-  const [createResume, { isLoading, isError }] = useCreateResumeMutation();
-
+const PersonalInput = ({ updateResume }) => {
   const dispatch = useDispatch();
   const [data, setData] = useState({});
+  const [img, setImg] = useState({});
   const resume = useSelector((state) => state.resume.value);
   console.log(resume);
   const firstNameRef = useRef();
@@ -17,15 +15,21 @@ const PersonalInput = () => {
   const phoneRef = useRef();
   const addressRef = useRef();
   const summaryRef = useRef();
+  const photoRef = useRef();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData({
-      name,
-      value,
-    });
+    const file = e.target.files[0];
+    TransformFile(file);
   };
-
+  const TransformFile = (file) => {
+    const reader = new FileReader();
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImg(reader.result);
+      };
+    }
+  };
   useEffect(() => {
     dispatch(
       info({
@@ -37,9 +41,10 @@ const PersonalInput = () => {
         phone: phoneRef?.current.value,
         address: addressRef?.current.value,
         summary: summaryRef?.current.value,
+        photo: img,
       })
     );
-  }, [data]);
+  }, [img]);
 
   // useEffect(() => {
   //   refName.current.value = user.name;
@@ -57,21 +62,6 @@ const PersonalInput = () => {
   //   );
   // }, []);
 
-  const submitHandle = () => {
-    if (isError) {
-      console.log("Error");
-    }
-    createResume({
-      ...resume,
-      firstName: firstNameRef?.current.value,
-      lastName: lastNameRef?.current.value,
-      email: emailRef?.current.value,
-      linkedin: linkedinRef?.current.value,
-      phone: phoneRef?.current.value,
-      address: addressRef?.current.value,
-      summary: summaryRef?.current.value,
-    });
-  };
   return (
     // <DashboardLayout>
 
@@ -86,7 +76,6 @@ const PersonalInput = () => {
             placeholder=" "
             autoComplete="off"
             className="resumeInput"
-            onChange={(e) => handleChange(e)}
           />
           <label
             for="name"
@@ -103,7 +92,6 @@ const PersonalInput = () => {
             placeholder=" "
             autoComplete="off"
             className=" resumeInput"
-            onChange={(e) => handleChange(e)}
           />
           <label
             htmlFor="LastName"
@@ -122,7 +110,6 @@ const PersonalInput = () => {
             placeholder=" "
             autoComplete="off"
             className=" resumeInput"
-            onChange={(e) => handleChange(e)}
           />
           <label
             for="Email"
@@ -139,7 +126,6 @@ const PersonalInput = () => {
             placeholder=" "
             autoComplete="off"
             className=" resumeInput"
-            onChange={(e) => handleChange(e)}
           />
           <label
             for="Phone"
@@ -157,13 +143,29 @@ const PersonalInput = () => {
           placeholder=" "
           autoComplete="off"
           className=" resumeInput"
-          onChange={(e) => handleChange(e)}
         />
         <label
           for="LinkedIn"
           className="absolute top-3 left-0 text-white pointer-events-none transition duration-400 ease-in-out bg-transparent  "
         >
           LinkedIn
+        </label>
+      </div>
+      <div class="relative float-label-input ">
+        <input
+          ref={photoRef}
+          type="file"
+          name="linkedin"
+          placeholder=" "
+          autoComplete="off"
+          className=" resumeInput"
+          onChange={(e) => handleChange(e)}
+        />
+        <label
+          for="LinkedIn"
+          className="absolute top-3 left-0 text-white pointer-events-none transition duration-400 ease-in-out bg-transparent  "
+        >
+          Image
         </label>
       </div>
       <div class="relative float-label-input ">
@@ -174,7 +176,6 @@ const PersonalInput = () => {
           placeholder=" "
           autoComplete="off"
           className=" resumeInput"
-          onChange={(e) => handleChange(e)}
         />
         <label
           for="Summary"
@@ -191,7 +192,6 @@ const PersonalInput = () => {
           placeholder=" "
           autoComplete="off"
           className=" resumeInput"
-          onChange={(e) => handleChange(e)}
         />
         <label
           for="Address"
@@ -200,8 +200,6 @@ const PersonalInput = () => {
           Address
         </label>
       </div>
-
-      <button onClick={() => submitHandle()}>Submit</button>
     </div>
 
     // </DashboardLayout>

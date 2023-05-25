@@ -8,7 +8,10 @@ import {
 } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
 import { FaFacebookF } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import { RxAvatar } from "react-icons/rx";
 import { Link } from "react-router-dom";
+import { getUserDetails, removeSessions } from "../helpers/SessionHelper";
 import LoginPage from "../pages/LoginPage";
 import SignUpPage from "../pages/SignUpPage";
 import Modal from "./Modal";
@@ -16,7 +19,10 @@ const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
-
+  const user = getUserDetails();
+  const logOut = () => {
+    removeSessions();
+  };
   return (
     <>
       <nav className="h-20 w-full flex flex-row justify-center items-center bg-indigo-400 z-[99999] fixed">
@@ -45,22 +51,49 @@ const Navbar = () => {
           </div>
           <div>
             <ul className="list-none flex items-center gap-6">
-              <li className="hidden md:block">
-                <button
-                  className="px-6 py-1 text-md bg-white hover:bg-gray-200  text-indigo-600 rounded-3xl shadow-lg transition-colors   ease-in-out duration-500"
-                  onClick={() => setShowModal(!showModal)}
-                >
-                  Sign Up
-                </button>
-              </li>
-              <li className="hidden md:block">
-                <button
-                  className="px-6 py-1 text-md bg-indigo-500 hover:bg-indigo-700 text-white rounded-3xl shadow-lg transition-colors  ease-in-out duration-400"
-                  onClick={() => setShowModal1(!showModal1)}
-                >
-                  Login
-                </button>
-              </li>
+              {user ? (
+                <>
+                  <li className="hidden md:block">
+                    {user?.user?.photo ? (
+                      <img
+                        className="h-10 w-10 rounded-full bg-cover"
+                        src={user?.user?.photo}
+                        alt={user.user.name}
+                      />
+                    ) : (
+                      <i>
+                        <RxAvatar className="text-white" size={30} />
+                      </i>
+                    )}
+                  </li>
+                  <li className="hidden md:block">
+                    <i className="cursor-pointer" onClick={() => logOut()}>
+                      <FiLogOut className="text-white" size={30} />
+                    </i>
+                  </li>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <li className="hidden md:block">
+                    <button
+                      className="px-6 py-1 text-md bg-white hover:bg-gray-200  text-indigo-600 rounded-3xl shadow-lg transition-colors   ease-in-out duration-500"
+                      onClick={() => setShowModal(!showModal)}
+                    >
+                      Sign Up
+                    </button>
+                  </li>
+                  <li className="hidden md:block">
+                    <button
+                      className="px-6 py-1 text-md bg-indigo-500 hover:bg-indigo-700 text-white rounded-3xl shadow-lg transition-colors  ease-in-out duration-400"
+                      onClick={() => setShowModal1(!showModal1)}
+                    >
+                      Login
+                    </button>
+                  </li>
+                </>
+              )}
+
               <li>
                 <i
                   className="text-white cursor-pointer block lg:hidden"
@@ -95,22 +128,50 @@ const Navbar = () => {
           <div className="container flex flex-col justify-center items-center pt-16 px-6">
             <div>
               <ul className="list-none flex flex-col items-center gap-6">
-                <li>
-                  <button
-                    className="px-12 py-1 text-md bg-white hover:bg-gray-200  text-indigo-600 rounded-3xl shadow-lg transition-colors  ease-in-out duration-400"
-                    onClick={() => setShowModal(!showModal) || setToggle()}
-                  >
-                    Sign Up
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="px-12 py-1 text-md bg-indigo-500 hover:bg-indigo-700 text-white rounded-3xl shadow-lg transition-colors ease-in-out duration-400"
-                    onClick={() => setShowModal1(!showModal1) || setToggle()}
-                  >
-                    Login
-                  </button>
-                </li>
+                {user ? (
+                  <>
+                    <li className="hidden md:block">
+                      {user?.user?.photo ? (
+                        <img
+                          className="h-10 w-10 rounded-full bg-cover"
+                          src={user?.user?.photo}
+                          alt={user.user.name}
+                        />
+                      ) : (
+                        <i>
+                          <RxAvatar className="text-white" size={30} />
+                        </i>
+                      )}
+                    </li>{" "}
+                    <li className="hidden md:block">
+                      <i className="cursor-pointer" onClick={() => logOut()}>
+                        <FiLogOut className="text-white" size={30} />
+                      </i>
+                    </li>{" "}
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <button
+                        className="px-12 py-1 text-md bg-white hover:bg-gray-200  text-indigo-600 rounded-3xl shadow-lg transition-colors  ease-in-out duration-400"
+                        onClick={() => setShowModal(!showModal) || setToggle()}
+                      >
+                        Sign Up
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="px-12 py-1 text-md bg-indigo-500 hover:bg-indigo-700 text-white rounded-3xl shadow-lg transition-colors ease-in-out duration-400"
+                        onClick={() =>
+                          setShowModal1(!showModal1) || setToggle()
+                        }
+                      >
+                        Login
+                      </button>
+                    </li>
+                  </>
+                )}
+
                 <li>
                   <i
                     className="text-white cursor-pointer "

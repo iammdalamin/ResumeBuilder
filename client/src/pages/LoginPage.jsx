@@ -1,19 +1,43 @@
+import cogoToast from "cogo-toast";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../feature/api";
+import { setToken, setUserDetails, setEmail } from "../helpers/SessionHelper";
 
 const LoginPage = ({ onClose }) => {
+  const [login, result] = useLoginMutation();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const userData = {
       email: email,
       password: password,
     };
-    // console.log(userData);
+    await login(userData);
   };
+
+  if (result.status === "fulfilled") {
+    if (result.data.status != 400) {
+      setEmail(result.data.email);
+
+      setToken(result.data.token);
+      setUserDetails(result.data);
+      cogoToast.success("Login Successful");
+      onClose();
+    } else {
+      cogoToast.error(result?.data.error);
+    }
+  }
+
+  if (result.status === "rejected") {
+    cogoToast.error("Something went wrong");
+  }
 
   return (
     <motion.div
@@ -49,7 +73,7 @@ const LoginPage = ({ onClose }) => {
 
         <button
           onClick={(e) => handleOnSubmit(e)}
-          className="px-5 py-2 bg-gray-50 text-indigo-800 hover:bg-indigo-800 hover:text-gray-50 focus:outline-none duration-700"
+          className="px-5 py-2 bg-gray-50 text-indigo-800 hover:bg-indigo-800 hover:text-gray-50 focus:outline-none duration-700 disabled:opacity-75 disabled:cursor-not-allowed"
         >
           Login
         </button>

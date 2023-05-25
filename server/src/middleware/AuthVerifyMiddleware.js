@@ -3,7 +3,7 @@ var jwt = require("jsonwebtoken");
 module.exports = async (req, res, next) => {
   let token = req.headers["token"];
   // console.log(token);
-  jwt.verify(token, "SecretKey123456789", (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     // console.log("authdecode", decoded, "AuthErr", err);
     if (err) {
       // console.log(token);

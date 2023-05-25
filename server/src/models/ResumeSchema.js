@@ -3,27 +3,40 @@ const mongoose = require('mongoose');
 const resumeSchema = new mongoose.Schema({
 
   author: 
-    { type: mongoose.Types.ObjectId, ref: 'users' }    
+    { type: mongoose.Schema.Types.ObjectId, ref: 'users' }    
   ,
+  title:{
+    type: String,
+    require:true
+  },
+  photo:{
+    type: String,
+    require:true
+  },
 
   firstName: {
     type: String,
-    
+    require:true
+
   },
   lastName: {
     type: String,
-    
+    require:true
+
   },
   email: {
     type: String,
-    
+    require:true
+
   },
   phone: {
     type: String,
-    
+    require:true
+
   },
   address: {
     type: String,
+    
   },
   linkedin: {
     type: String,
@@ -77,18 +90,8 @@ const resumeSchema = new mongoose.Schema({
       ],
     },
   ],
-  skills: [
-    {
-      name: {
-        type: String,
-        
-      },
-      level: {
-        type: String,
-        
-      },
-    },
-    ],
+  skills: [{ type: String }],
+  languages: [{ type: String }],
     type: { type: String },
   premium:{type:Boolean}
 });
