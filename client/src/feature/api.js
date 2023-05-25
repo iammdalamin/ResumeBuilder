@@ -15,6 +15,15 @@ export const resumeApi = createApi({
             },
           }),
     }),
+    findResume: builder.query({
+        query: (type) => ({
+            url: `/resume/create/${type}`,
+            method: "GET",
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }),
+    }),
     createResume: builder.mutation({
       query: (body) => ({
         url: '/resume/create/creative',

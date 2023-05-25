@@ -11,12 +11,12 @@ const SignUpPage = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [img, setImg] = useState();
-  const [data, setData] = useState();
-  const [registration, { isLoading, isError, error }] =
-    useRegistrationMutation();
+  const [data, setData] = useState(null);
+  const [registration, result] = useRegistrationMutation();
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+
     if (password === confirmPassword) {
       const userData = {
         firstName: firstName,
@@ -25,13 +25,14 @@ const SignUpPage = ({ onClose }) => {
         password: password,
         photo: img,
       };
-      setData(userData);
+      console.log(userData);
+
+      await registration(userData);
 
       // con
     } else {
       console.log("Password didn't match!");
     }
-    await registration(data);
   };
 
   const onChangeHandle = (e) => {
@@ -49,7 +50,7 @@ const SignUpPage = ({ onClose }) => {
   };
 
   // const [registration, result] = useRegistrationMutation(data);
-  console.log(isError);
+  console.log(result);
 
   return (
     <motion.div

@@ -122,16 +122,13 @@ const ResumePage = () => {
               const { imgURL, type, desc, premium } = item;
               console.log(imgURL);
               return (
-                <Link to={`/dashboard/${type}`}>
-                  {" "}
-                  <FeatureItem
-                    key={i}
-                    imgURL={imgURL}
-                    type={type}
-                    desc={desc}
-                    premium={premium}
-                  />
-                </Link>
+                <FeatureItem
+                  key={i}
+                  imgURL={imgURL}
+                  type={type}
+                  desc={desc}
+                  premium={premium}
+                />
               );
             })}
           </div>

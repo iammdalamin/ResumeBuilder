@@ -28,7 +28,7 @@ router.get("/taskStatusCount",AuthVerifyMiddleware,taskController.taskStatusCoun
 
 
 
-router.post("/resume/create/:type", createResume)
+router.get("/resume/create/:type", createResume)
 router.get("/resume/:type", getResume)
 router.get("/resume/update/:type", updateResume)
 

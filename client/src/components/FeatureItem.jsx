@@ -2,6 +2,7 @@ import React from "react";
 import { AiFillStar } from "react-icons/ai";
 
 const FeatureItem = ({ imgURL, title, desc, type, premium }) => {
+  const exploreHandle = () => {};
   return (
     <div className="mb-14 relative ">
       {premium ? (
@@ -18,12 +19,24 @@ const FeatureItem = ({ imgURL, title, desc, type, premium }) => {
         ""
       )}
 
-      <div className="w-[18rem] ">
-        <img
-          className="w-full rounded ease-linear duration-300 cursor-pointer hover:scale-105"
-          src={imgURL}
-          alt={title}
-        />
+      <div className="w-[18rem]  transition-all duration-500">
+        <div className="w-full h-full bg-slate-400"></div>
+
+        <div className="relative group ">
+          <button
+            className="absolute top-52 left-14 px-6 py-2 bg-indigo-700 text-white hidden duration-500 ease-linear group-hover:block "
+            onClick={() => exploreHandle()}
+          >
+            {" "}
+            Explore Resume
+          </button>
+          <img
+            className="w-full rounded ease-linear duration-300 cursor-pointer "
+            src={imgURL}
+            alt={title}
+          />
+        </div>
+
         <div className="text-left mt-5">
           <h3 className="text-xl font-semibold">{title ? title : type}</h3>
           <p className="text-gray-500 text-sm">{desc}</p>

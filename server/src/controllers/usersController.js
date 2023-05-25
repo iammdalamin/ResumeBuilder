@@ -8,10 +8,10 @@ const { comparePassword, hashPassword } = require("../helpers/auth");
 const cloudinary = require("../Utility/cloudinary");
 
 // Registration
-exports.registration = async(req, res) => {
+exports.registration = async (req, res) => {
+console.log(req.body );
   try {
-    const { firstName, lastName, email, password, photo } = req.body[0];
-    console.log(req.body);
+    const { firstName, lastName, email, password, photo } =  req.body[0];
     if (!firstName.trim()) {
         return res.json({status:400,
             error:"First name is required"})
@@ -59,34 +59,33 @@ exports.registration = async(req, res) => {
   //     })
   //  }
    const hashedPassword = await hashPassword(password)
-
     if (photo) {
     const result = await cloudinary.uploader.upload(photo, {
         upload_preset: "resumeUser",
     });
 
-    if (result) {
+      if (result) {
         const user = await new UserModel({
-            firstName,
-            lastName,
-          email,
-            photo:result.url,
-            password:hashedPassword
-        }).save()
+          firstName,
+          lastName,
+        email,
+          photo:result?.url,
+          password:hashedPassword
+      }).save()
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+          expiresIn:"7d",
+      })
 
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-            expiresIn:"7d",
-        })
+      res.json({
+          user: {
+              name: `${user.firstName +" "+ user.lastName}`,
+              email: user.email,
+          },
+          token
 
-        res.json({
-            user: {
-                name: `${user.firstName +" "+ user.lastName}`,
-                email: user.email,
-            },
-            token
-
-        })
-    }
+      })
+   }
+   
   }
 
 } catch(err) {
