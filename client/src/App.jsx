@@ -10,6 +10,7 @@ import ExperienceInput from "./components/Dashboard/ExperienceInput";
 import PersonalInput from "./components/Dashboard/PersonalInput";
 import SkillsInput from "./components/Dashboard/SkillsInput";
 import Steps from "./components/Dashboard/Steps";
+import { getToken } from "./helpers/SessionHelper";
 import PreviewPage from "./pages/DashboardPages/PreviewPage";
 import ResumeCreate from "./pages/DashboardPages/ResumeCreate";
 import HomePage from "./pages/HomePage";
@@ -18,6 +19,8 @@ import ResumePage from "./pages/ResumePage";
 import SignUpPage from "./pages/SignUpPage";
 import Template0 from "./templates/Template0";
 const App = () => {
+  const token = getToken();
+
   return (
     <Router>
       {/* <Navbar /> */}
@@ -34,7 +37,10 @@ const App = () => {
         <Route path="/dashboard/personal-info" element={<PersonalInput />} />
         <Route path="/dashboard/education" element={<EducationInput />} />
         <Route path="/dashboard/experience" element={<ExperienceInput />} />
-        <Route path="/dashboard/resume/create/:type" element={<Steps />} />
+        <Route
+          path="/dashboard/resume/create/:type"
+          element={token ? <Steps /> : <HomePage />}
+        />
 
         {/* UnknownRoutes */}
         <Route path="*" element={<h1>Not Found</h1>} />
